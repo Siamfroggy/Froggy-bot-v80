@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoatBot V2 - Aminul Sardar</title>
+    <meta name="description" content="GoatBot V2 Messenger Bot Control Panel & Live Status Dashboard maintained by Aminul Sardar">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.02); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white">
+    <!-- Navigation Header -->
+    <nav class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <div class="flex items-center gap-3">
+                    <div class="relative flex items-center justify-center">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-indigo-500/20">
+                            🤖
+                        </div>
+                        <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-slate-900"></span>
+                        </span>
+                    </div>
+                    <div>
+                        <span class="font-black text-xl sm:text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
+                            GoatBot V2
+                        </span>
+                        <p class="text-xs text-slate-400 font-medium hidden sm:block">Maintained by <span class="text-indigo-300 font-semibold">Aminul Sardar</span></p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 shadow-inner">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="header-status-text">System Online</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col items-center">
+
+        <!-- Bot Profile & Info Card (Hero) -->
+        <div class="w-full max-w-4xl bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800/80 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden mb-8">
+            <!-- Background Glow Decor -->
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+                
+                <!-- Bot Picture Container -->
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse-slow"></div>
+                    <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-slate-900 bg-slate-800 shadow-2xl flex items-center justify-center">
+                        <img 
+                            id="bot-avatar" 
+                            src="https://graph.facebook.com/61596017104421/picture?width=2048&height=2048&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662" 
+                            alt="Bot Profile Picture" 
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Aminul+Sardar&background=4f46e5&color=fff&size=512';"
+                        />
+                    </div>
+                    <span class="absolute bottom-1 right-2 bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-full border-2 border-slate-900 shadow-md">
+                        ONLINE
+                    </span>
+                </div>
+
+                <!-- Bot Details -->
+                <div class="flex-1 space-y-3">
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                        <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                            FB BOT
+                        </span>
+                        <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                            PREFIX: <span id="bot-prefix-tag" class="text-white font-black">-</span>
+                        </span>
+                    </div>
+
+                    <h1 id="bot-name-display" class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-none">
+                        Aminul Sardar
+                    </h1>
+                    
+                    <p class="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
+                        Official Facebook Messenger Bot active with <span class="text-indigo-400 font-semibold">Aminul Sardar FCA Engine</span>. Listening to incoming messages, executing commands, and handling events.
+                    </p>
+
+                    <div class="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
+                        <a 
+                            id="fb-profile-link" 
+                            href="https://facebook.com/61596017104421" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/20"
+                        >
+                            <i class="fa-brands fa-facebook text-base"></i>
+                            <span>View Facebook Profile</span>
+                        </a>
+
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-300 text-xs sm:text-sm font-mono">
+                            <i class="fa-solid fa-id-badge text-indigo-400"></i>
+                            <span>UID: <strong id="bot-uid-text" class="text-white">61596017104421</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-Time Live Uptime Showcase Banner -->
+        <div class="w-full max-w-4xl bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8 relative overflow-hidden text-center">
+            <div class="flex items-center justify-center gap-2 text-indigo-400 text-xs sm:text-sm font-bold uppercase tracking-widest mb-2">
+                <i class="fa-solid fa-stopwatch animate-spin" style="animation-duration: 4s;"></i>
+                <span>Live System Uptime Counter</span>
+            </div>
+
+            <div id="uptime-digital-clock" class="text-4xl sm:text-6xl font-black tracking-tight font-mono bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400 py-2">
+                00d 00h 00m 00s
+            </div>
+
+            <p class="text-slate-400 text-xs sm:text-sm mt-2">
+                Continuous uptime monitored live from server instance. Server running on Port 3000.
+            </p>
+        </div>
+
+        <!-- Status Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full max-w-4xl mb-8">
+            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 flex flex-col items-center text-center hover:border-slate-700 transition-colors">
+                <div class="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl mb-3 border border-blue-500/20">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <h3 class="text-sm font-bold text-white mb-1">Server Status</h3>
+                <p class="text-xs text-emerald-400 font-semibold">Active (Node.js)</p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 flex flex-col items-center text-center hover:border-slate-700 transition-colors">
+                <div class="w-11 h-11 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-3 border border-purple-500/20">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <h3 class="text-sm font-bold text-white mb-1">FCA Engine</h3>
+                <p id="fca-engine-text" class="text-xs text-slate-400">Aminul Sardar FCA</p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 flex flex-col items-center text-center hover:border-slate-700 transition-colors">
+                <div class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl mb-3 border border-indigo-500/20">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <h3 class="text-sm font-bold text-white mb-1">Commands Loaded</h3>
+                <p class="text-xs text-indigo-400 font-semibold">67 Cmds & 6 Events</p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 flex flex-col items-center text-center hover:border-slate-700 transition-colors">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-3 border border-emerald-500/20">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <h3 class="text-sm font-bold text-white mb-1">Database</h3>
+                <p class="text-xs text-slate-400">SQLite Connected</p>
+            </div>
+        </div>
+
+        <!-- Endpoints Quick Links Banner -->
+        <div class="w-full max-w-4xl rounded-2xl bg-slate-900/40 border border-slate-800/80 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4 text-left">
+                <div class="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    <i class="fa-solid fa-code text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white text-sm sm:text-base">Developer API Endpoints</h4>
+                    <p class="text-xs text-slate-400">Live JSON endpoints for uptime and bot metadata integration.</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="/api/bot-info" target="_blank" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs sm:text-sm transition-colors whitespace-nowrap">
+                    /api/bot-info
+                </a>
+                <a href="/uptime" target="_blank" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap">
+                    /uptime
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+        <p>GoatBot V2 &bull; Maintained by <span class="text-slate-300 font-semibold">Aminul Sardar</span> &bull; Powered by Node.js</p>
+    </footer>
+
+    <!-- Real-Time Uptime & Bot Metadata Fetch Script -->
+    <script>
+        let serverUptimeSeconds = 0;
+
+        function formatTime(totalSeconds) {
+            const days = Math.floor(totalSeconds / (3600 * 24));
+            const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.floor(totalSeconds % 60);
+
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${days > 0 ? pad(days) + 'd ' : ''}${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+        }
+
+        async function fetchBotInfo() {
+            try {
+                const response = await fetch('/api/bot-info');
+                if (!response.ok) return;
+                const data = await response.json();
+
+                if (data.botID) {
+                    document.getElementById('bot-uid-text').textContent = data.botID;
+                    document.getElementById('fb-profile-link').href = `https://facebook.com/${data.botID}`;
+                    const targetAvatar = data.avatarUrl || `https://graph.facebook.com/${data.botID}/picture?width=2048&height=2048&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+                    const currentAvatar = document.getElementById('bot-avatar');
+                    if (!currentAvatar.dataset.botid || currentAvatar.dataset.botid !== data.botID) {
+                        currentAvatar.dataset.botid = data.botID;
+                        currentAvatar.src = targetAvatar + `&t=${Date.now()}`;
+                    }
+                }
+
+                if (data.botName) {
+                    document.getElementById('bot-name-display').textContent = data.botName;
+                }
+
+                if (data.prefix) {
+                    document.getElementById('bot-prefix-tag').textContent = data.prefix;
+                }
+
+                if (data.fcaModule) {
+                    document.getElementById('fca-engine-text').textContent = data.fcaModule;
+                }
+
+                if (typeof data.uptimeSeconds === 'number') {
+                    serverUptimeSeconds = data.uptimeSeconds;
+                    document.getElementById('uptime-digital-clock').textContent = formatTime(serverUptimeSeconds);
+                }
+            } catch (err) {
+                console.warn("Error fetching bot info:", err);
+            }
+        }
+
+        // Timer increment loop (1 second interval)
+        setInterval(() => {
+            if (serverUptimeSeconds >= 0) {
+                serverUptimeSeconds++;
+                document.getElementById('uptime-digital-clock').textContent = formatTime(serverUptimeSeconds);
+            }
+        }, 1000);
+
+        // Fetch initial info and sync every 5 seconds
+        fetchBotInfo();
+        setInterval(fetchBotInfo, 5000);
+    </script>
+</body>
+</html>

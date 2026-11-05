@@ -1,0 +1,19 @@
+{
+  "services": [
+    {
+      "type": "web",
+      "name": "goatbot-v2-aminul",
+      "env": "node",
+      "region": "singapore",
+      "plan": "free",
+      "buildCommand": "npm install",
+      "startCommand": "npm start",
+      "envVars": [
+        {
+          "key": "NODE_VERSION",
+          "value": "20.11.0"
+        }
+      ]
+    }
+  ]
+}
